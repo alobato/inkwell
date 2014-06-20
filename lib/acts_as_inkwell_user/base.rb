@@ -155,11 +155,14 @@ module Inkwell
 
         ::Inkwell::Following.create :follower_id => self.id, :followed_id => user.id
 
-        self.following_count += 1
-        self.save
 
-        user.follower_count += 1
-        user.save
+        self.update_attribute(:following_count, self.following_count + 1)
+        # self.following_count += 1
+        # self.save
+
+        user.update_attribute(:follower_count, user.follower_count + 1)
+        # user.follower_count += 1
+        # user.save
 
         post_class = Object.const_get ::Inkwell::Engine::config.post_table.to_s.singularize.capitalize
         user_id_attr = "#{::Inkwell::Engine::config.user_table.to_s.singularize}_id"
